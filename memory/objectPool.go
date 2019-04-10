@@ -1,8 +1,6 @@
 /* Usage:
 func main() {
-	p := memory.NewObjectPool(func() interface{} {
-		return nil
-	})
+	p := memory.NewObjectPool()
 	p.Start()
 
 	p.Put("1", 1)
@@ -52,10 +50,9 @@ type ObjectPool struct {
 	New func() interface{}
 }
 
-func NewObjectPool(New func() interface{}) *ObjectPool {
+func NewObjectPool() *ObjectPool {
 	return &ObjectPool{
 		pool: make(map[string]*object),
-		New:  New,
 	}
 }
 

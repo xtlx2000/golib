@@ -1,26 +1,29 @@
 package main
 
 import (
-	"github.com/xtlx2000/golib/memory"
+	"strconv"
+	"time"
 
 	"github.com/xtlx2000/golib/log"
+	"github.com/xtlx2000/golib/memory"
 )
 
 func main() {
-	p := memory.NewObjectPool(func() interface{} {
-		return nil
-	})
+	p := memory.NewTimeObjectPool(10)
 	p.Start()
 
-	p.Put("1", 1)
-	p.Put("2", 2)
-	p.Put("3", 3)
-	p.Put("4", 4)
+	for i := 0; i < 10; i++ {
+		p.Put(strconv.Itoa(i), i)
+	}
+	time.Sleep(9 * time.Second)
+	for i := 0; i < 11; i++ {
+		value := p.Get(strconv.Itoa(i))
+		log.Infof("get key=%v, value=%v", strconv.Itoa(i), value)
+	}
 
-	log.Infof("%v", p.Get("1"))
-	log.Infof("%v", p.Get("2"))
-	log.Infof("%v", p.Get("3"))
-	log.Infof("%v", p.Get("4"))
-	log.Infof("%v", p.Get("5"))
-	log.Infof("%v", p.Get("6"))
+	time.Sleep(20 * time.Second)
+	for i := 0; i < 11; i++ {
+		value := p.Get(strconv.Itoa(i))
+		log.Infof("get key=%v, value=%v", strconv.Itoa(i), value)
+	}
 }
