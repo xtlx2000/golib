@@ -29,10 +29,23 @@ package memory
 
 import (
 	"sync"
+	"time"
 )
 
+type Object struct {
+	o        interface{}
+	lastTime time.Time
+}
+
+func NewObject(o interface{}) *Object {
+	return &Object{
+		o:        o,
+		lastTime: time.Now(),
+	}
+}
+
 type ObjectPool struct {
-	pool map[string]interface{}
+	pool map[string]*Object
 	lock sync.RWMutex
 
 	New func() interface{}
@@ -40,15 +53,23 @@ type ObjectPool struct {
 
 func NewObjectPool(New func() interface{}) *ObjectPool {
 	return &ObjectPool{
-		pool: make(map[string]interface{}),
+		pool: make(map[string]*Object),
 		New:  New,
 	}
+}
+
+func (p *ObjectPool) Start() {
+	// TODO
+}
+
+func (p *ObjectPool) Stop() {
+	// TODO
 }
 
 func (p *ObjectPool) Put(key string, value interface{}) {
 	p.lock.Lock()
 	defer p.lock.Unlock()
-	p.pool[key] = value
+	p.pool[key] = NewObject(value)
 }
 
 func (p *ObjectPool) Get(key string) interface{} {
@@ -58,5 +79,6 @@ func (p *ObjectPool) Get(key string) interface{} {
 	if !isExist {
 		return p.New()
 	}
-	return value
+	value.lastTime = time.Now()
+	return value.o
 }
