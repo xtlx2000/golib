@@ -1,4 +1,4 @@
-/* usage:
+/* Usage:
 func main() {
 	p := memory.NewObjectPool(func() interface{} {
 		return nil
@@ -47,14 +47,14 @@ func NewObjectPool(New func() interface{}) *ObjectPool {
 
 func (p *ObjectPool) Put(key string, value interface{}) {
 	p.lock.Lock()
+	defer p.lock.Unlock()
 	p.pool[key] = value
-	p.lock.Unlock()
 }
 
 func (p *ObjectPool) Get(key string) interface{} {
 	p.lock.RLock()
+	defer p.lock.RUnlock()
 	value, isExist := p.pool[key]
-	p.lock.RUnlock()
 	if !isExist {
 		return p.New()
 	}
