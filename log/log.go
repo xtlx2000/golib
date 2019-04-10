@@ -43,6 +43,6 @@ func LOG(level string, formating string, args ...interface{}) {
 		filename = filepath.Base(filename)
 	}
 
-	//log.Printf("[%s]\t%s:%s() %d: %s\n", level, filename, funcName, line, fmt.Sprintf(formating, args...))
-	log.Printf("[%s] %s:%d:  %s\n", level, filename, line, fmt.Sprintf(formating, args...))
+	//log.Printf("[%s]\t%s:%s() %d:%s\n", level, filename, funcName, line, fmt.Sprintf(formating, args...))
+	log.Printf("[%s] %s:%d:%s\n", level, filename, line, fmt.Sprintf(formating, args...))
 }

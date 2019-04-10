@@ -33,20 +33,20 @@ import (
 	"time"
 )
 
-type Object struct {
+type object struct {
 	o        interface{}
 	lastTime time.Time
 }
 
-func NewObject(o interface{}) *Object {
-	return &Object{
+func newObject(o interface{}) *object {
+	return &object{
 		o:        o,
 		lastTime: time.Now(),
 	}
 }
 
 type ObjectPool struct {
-	pool map[string]*Object
+	pool map[string]*object
 	lock sync.RWMutex
 
 	New func() interface{}
@@ -54,23 +54,25 @@ type ObjectPool struct {
 
 func NewObjectPool(New func() interface{}) *ObjectPool {
 	return &ObjectPool{
-		pool: make(map[string]*Object),
+		pool: make(map[string]*object),
 		New:  New,
 	}
 }
 
-func (p *ObjectPool) Start() {
+func (p *ObjectPool) Start() error {
 	// TODO
+	return nil
 }
 
-func (p *ObjectPool) Stop() {
+func (p *ObjectPool) Stop() error {
 	// TODO
+	return nil
 }
 
 func (p *ObjectPool) Put(key string, value interface{}) {
 	p.lock.Lock()
 	defer p.lock.Unlock()
-	p.pool[key] = NewObject(value)
+	p.pool[key] = newObject(value)
 }
 
 func (p *ObjectPool) Get(key string) interface{} {
