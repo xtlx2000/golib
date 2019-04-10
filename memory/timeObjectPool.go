@@ -35,18 +35,22 @@ type TimeObjectPool struct {
 	// for putter goroutine
 	putChan chan *objectPutter
 	// for patroltask goroutine
-	validDuration float64
-	iter          linkedhashmap.Iterator
+	patrolInterval int
+	patrolNum      int
+	validDuration  float64
+	iter           linkedhashmap.Iterator
 }
 
-func NewTimeObjectPool(validDuration float64) *TimeObjectPool {
+func NewTimeObjectPool(patrolInterval, patrolNum int, validDuration float64) *TimeObjectPool {
 	hashMap := linkedhashmap.New()
 	return &TimeObjectPool{
-		hashMap:       hashMap,
-		getChan:       make(chan *objectGetter),
-		putChan:       make(chan *objectPutter),
-		validDuration: validDuration,
-		iter:          hashMap.Iterator(),
+		hashMap:        hashMap,
+		getChan:        make(chan *objectGetter),
+		putChan:        make(chan *objectPutter),
+		patrolInterval: patrolInterval,
+		patrolNum:      patrolNum,
+		validDuration:  validDuration,
+		iter:           hashMap.Iterator(),
 	}
 }
 
@@ -108,7 +112,7 @@ func (p *TimeObjectPool) loop() {
 		case putter := <-p.putChan:
 			p.hashMap.Put(putter.key, newObject(putter.value))
 			putter.resultChan <- nil
-		case <-time.After(time.Second * 1):
+		case <-time.After(time.Second * time.Duration(p.patrolInterval)):
 			p.patrolTask()
 		}
 	}
@@ -118,7 +122,7 @@ func (p *TimeObjectPool) patrolTask() {
 	log.Debugf("patrol task")
 	now := time.Now()
 	// iterate 100 items every task
-	for i := 0; i < 100; i++ {
+	for i := 0; i < p.patrolNum; i++ {
 		if !p.iter.Next() {
 			p.iter.Begin()
 			return

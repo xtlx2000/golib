@@ -9,24 +9,50 @@ import (
 	//"strings"
 )
 
+type Level int
+
+const (
+	DEBUG Level = iota
+	INFO
+	WARNING
+	ERROR
+	FATAL
+)
+
+var gLevel Level
+
+func SetLevel(l Level) {
+	gLevel = l
+}
+
 func Fatalf(formating string, args ...interface{}) {
-	LOG("FATAL", formating, args...)
+	if gLevel <= FATAL {
+		LOG("FATAL", formating, args...)
+	}
 }
 
 func Errorf(formating string, args ...interface{}) {
-	LOG("ERROR", formating, args...)
+	if gLevel <= ERROR {
+		LOG("ERROR", formating, args...)
+	}
 }
 
 func Warningf(formating string, args ...interface{}) {
-	LOG("WARNING", formating, args...)
+	if gLevel <= WARNING {
+		LOG("WARNING", formating, args...)
+	}
 }
 
 func Infof(formating string, args ...interface{}) {
-	LOG("INFO", formating, args...)
+	if gLevel <= INFO {
+		LOG("INFO", formating, args...)
+	}
 }
 
 func Debugf(formating string, args ...interface{}) {
-	LOG("DEBUG", formating, args...)
+	if gLevel <= DEBUG {
+		LOG("DEBUG", formating, args...)
+	}
 }
 
 func LOG(level string, formating string, args ...interface{}) {
