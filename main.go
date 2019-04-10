@@ -10,6 +10,7 @@ func main() {
 	p := memory.NewObjectPool(func() interface{} {
 		return nil
 	})
+	p.Start()
 
 	p.Put("1", 1)
 	p.Put("2", 2)
