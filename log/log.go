@@ -3,7 +3,8 @@ package log
 import (
 	"fmt"
 	"log"
-	"path/filepath"
+
+	//"path/filepath"
 	_ "reflect"
 	"runtime"
 	//"strings"
@@ -66,7 +67,7 @@ func LOG(level string, formating string, args ...interface{}) {
 			funcName = "init"
 		}
 		*/
-		filename = filepath.Base(filename)
+		//filename := filepath.Base(filename)
 	}
 
 	//log.Printf("[%s]\t%s:%s() %d:%s\n", level, filename, funcName, line, fmt.Sprintf(formating, args...))
