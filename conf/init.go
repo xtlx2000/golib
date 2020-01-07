@@ -13,7 +13,7 @@ var Settings *config.Config
 /* init func */
 func init() {
 	Settings = GetSettings()
-	log.INFO("config file init done.")
+	log.Infof("config file init done.")
 }
 
 /* func */
@@ -23,7 +23,7 @@ func GetSettings() *config.Config {
 	if Settings == nil {
 		settings, err = config.ReadDefault("config.cfg")
 		if err != nil {
-			log.ERROR("config file parse error: %v\n", err)
+			log.Errorf("config file parse error: %v\n", err)
 			return nil
 		}
 	}
