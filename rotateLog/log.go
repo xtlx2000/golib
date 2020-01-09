@@ -4,7 +4,7 @@ import (
 	"github.com/xtlx2000/golib/rotateLog/mlog"
 )
 
-func SteupLog(filename string, maxBytes, number int) {
+func SetupLog(filename string, maxBytes, number int) {
 	mlog.StartEx(mlog.LevelInfo, filename, maxBytes, number)
 }
 
