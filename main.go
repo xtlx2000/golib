@@ -6,7 +6,7 @@ import (
 
 func main() {
 
-	log.SteupLog("name.log", 5*1024, 5)
+	log.SetupLog("name.log", 5*1024, 5)
 	log.Errorf("wocao %v", nil)
 	log.Errorf("wocao1 %v", "string")
 	log.Errorf("wocao2 %v", 5)

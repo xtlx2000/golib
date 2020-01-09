@@ -231,14 +231,14 @@ func Trace(format string, a ...interface{}) {
 
 // Info writes to the Info destination
 func Info(format string, a ...interface{}) {
-	Logger.Info.Output(2, fmt.Sprintf(format, a...))
+	Logger.Info.Output(3, fmt.Sprintf(format, a...))
 }
 
 //** WARNING
 
 // Warning writes to the Warning destination
 func Warning(format string, a ...interface{}) {
-	Logger.Warning.Output(2, fmt.Sprintf(format, a...))
+	Logger.Warning.Output(3, fmt.Sprintf(format, a...))
 }
 
 //** ERROR
@@ -249,7 +249,7 @@ func Error(err error) {
 }
 
 func Errorf(format string, a ...interface{}) {
-	Logger.Error.Output(2, fmt.Sprintf(format, a...))
+	Logger.Error.Output(3, fmt.Sprintf(format, a...))
 }
 
 // IfError is a shortcut function for log.Error if error
@@ -270,7 +270,7 @@ func Fatal(a ...interface{}) {
 
 // Fatalf writes to the Fatal destination and exits with an error 255 code
 func Fatalf(format string, a ...interface{}) {
-	Logger.Fatal.Output(2, fmt.Sprintf(format, a...))
+	Logger.Fatal.Output(3, fmt.Sprintf(format, a...))
 	Sync()
 	os.Exit(255)
 }
