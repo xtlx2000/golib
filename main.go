@@ -1,18 +1,24 @@
 package main
 
-import (
-	"github.com/xtlx2000/golib/rotateLog"
-)
+type Item struct {
+	Id int
+}
+
+type item struct {
+	Item
+	num int
+}
+
+func newitem() *item {
+	return &item{
+		Item{
+			Id: 1,
+		},
+		num: 2,
+	}
+}
 
 func main() {
-
-	log.SetupLog("name.log", 5*1024, 5)
-	log.Errorf("wocao %v", nil)
-	log.Errorf("wocao1 %v", "string")
-	log.Errorf("wocao2 %v", 5)
-	log.Errorf("wocao3 %v", 6.6)
-
-	for i := 0; i < 10000; i++ {
-		log.Errorf("wocao3 %v", 6.6)
-	}
+	var i *item
+	i = newitem()
 }
