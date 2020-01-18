@@ -5,29 +5,29 @@ import (
 	"sync"
 )
 
-type pool struct {
+type rotateRefCountPool struct {
 	refMap   []*Item
 	currIdx  int
 	maxCount int
 	mutex    sync.RWMutex
 }
 
-func newRefPool(maxCount int) *pool {
-	return &pool{
+func newRotateRefCountPool(maxCount int) *rotateRefCountPool {
+	return &rotateRefCountPool{
 		refMap:   make([]*Item, maxCount, maxCount),
 		currIdx:  0,
 		maxCount: maxCount,
 	}
 }
 
-func (this *pool) New() (*Item, error) {
+func (this *rotateRefCountPool) New() (*Item, error) {
 	this.mutex.Lock()
 	defer this.mutex.Unlock()
 
 	it := &Item{
 		Id:       0,
 		Value:    nil,
-		refCount: 1, // pool hold 1
+		refCount: 1, // rotateRefCountPool hold 1
 	}
 
 	this.currIdx = (this.currIdx + 1) % this.maxCount
@@ -44,7 +44,7 @@ func (this *pool) New() (*Item, error) {
 
 	return it, nil
 }
-func (this *pool) Get(id int) (*Item, error) {
+func (this *rotateRefCountPool) Get(id int) (*Item, error) {
 	this.mutex.Lock()
 	defer this.mutex.Unlock()
 
@@ -58,7 +58,7 @@ func (this *pool) Get(id int) (*Item, error) {
 	it.refCount++ // Get()'s caller hold 1
 	return it, nil
 }
-func (this *pool) Release(it *Item) {
+func (this *rotateRefCountPool) Release(it *Item) {
 	this.mutex.Lock()
 	defer this.mutex.Unlock()
 

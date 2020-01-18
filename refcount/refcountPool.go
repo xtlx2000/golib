@@ -12,6 +12,10 @@ type Pool interface {
 	Release(*Item)
 }
 
-func NewPool(maxCount int) Pool {
-	return newRefPool(maxCount)
+func NewRotateRefCountPool(maxCount int) Pool {
+	return newRotateRefCountPool(maxCount)
+}
+
+func NewIncrementRefCountPool() Pool {
+	return newIncrementRefCountPool()
 }
