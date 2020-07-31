@@ -1,14 +1,19 @@
 before_script:
   - echo "before!!!\n"
+  - echo $CI_PROJECT_DIR
+  - make before
 
 build:
   script:
     - echo "build!!!\n"
+    - make build
   
 test:
   script:
     - echo "test!!!\n"
+    - make test
 
 deploy:
   script:
     - echo "deploy!!!\n"
+    - make deploy
