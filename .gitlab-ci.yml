@@ -1,0 +1,14 @@
+before_script:
+  - echo "before!!!\n"
+
+build:
+  script:
+    - echo "build!!!\n"
+  
+test:
+  script:
+    - echo "test!!!\n"
+
+deploy:
+  script:
+    - echo "deploy!!!\n"
