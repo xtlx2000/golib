@@ -15,5 +15,5 @@ test:
 
 deploy:
   script:
-    - echo "deploy!!!\n"
+    - echo "deploy!!!!\n"
     - make deploy
