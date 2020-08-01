@@ -3,17 +3,33 @@ before_script:
   - echo $CI_PROJECT_DIR
   - make before
 
+
+stages:
+  - build
+  - test
+  - deploy
+  
 build:
+  stage: build
   script:
     - echo "build!!!\n"
     - make build
   
 test:
+  stage: test
   script:
     - echo "test!!!\n"
     - make test
 
 deploy:
+  stage: deploy
   script:
     - echo "deploy!!!!\n"
     - make deploy
+
+
+
+after_script:
+  - echo "after!!!\n"
+  - echo $CI_PROJECT_DIR
+  - make after
