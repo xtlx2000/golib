@@ -2,6 +2,7 @@ before_script:
   - echo "before!!!\n"
   - echo $CI_PROJECT_DIR
   - pwd
+  - ls -l
   - make before
 
 
@@ -15,7 +16,6 @@ build:
   script:
     - echo "build!!!\n"
     - pwd
-    - ls -l
     - make build
   
 test:
