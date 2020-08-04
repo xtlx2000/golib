@@ -15,6 +15,7 @@ build:
   script:
     - echo "build!!!\n"
     - pwd
+    - ls -l
     - make build
   
 test:
