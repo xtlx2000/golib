@@ -13,6 +13,7 @@ build:
   stage: build
   script:
     - echo "build!!!\n"
+    - pwd
     - make build
   
 test:
