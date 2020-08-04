@@ -33,3 +33,4 @@ after_script:
   - echo "after!!!\n"
   - echo $CI_PROJECT_DIR
   - make after
+  
