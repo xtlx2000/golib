@@ -1,6 +1,7 @@
 before_script:
   - echo "before!!!\n"
   - echo $CI_PROJECT_DIR
+  - pwd
   - make before
 
 
@@ -20,12 +21,14 @@ test:
   stage: test
   script:
     - echo "test!!!\n"
+    - pwd
     - make test
 
 deploy:
   stage: deploy
   script:
     - echo "deploy!!!!\n"
+    - pwd
     - make deploy
 
 
@@ -33,5 +36,6 @@ deploy:
 after_script:
   - echo "after!!!\n"
   - echo $CI_PROJECT_DIR
+  - pwd
   - make after
   
