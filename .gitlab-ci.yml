@@ -16,6 +16,7 @@ build:
   script:
     - echo "build!!!\n"
     - pwd
+    - apt-get install make
     - make build
   
 test:
