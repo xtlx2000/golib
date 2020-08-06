@@ -3,6 +3,7 @@ before_script:
   - echo $CI_PROJECT_DIR
   - pwd
   - ls -l
+  - apt-get install make
   - make before
 
 
@@ -16,7 +17,6 @@ build:
   script:
     - echo "build!!!\n"
     - pwd
-    - apt-get install make
     - make build
   
 test:
