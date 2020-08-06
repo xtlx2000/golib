@@ -8,6 +8,7 @@ clean:
 		
 		
 before:
+	apt-get install make
 	echo "make before"
 	
 build:
