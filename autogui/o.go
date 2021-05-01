@@ -2,7 +2,7 @@ package autogui
 
 import (
 	"github.com/go-vgo/robotgo"
-	"github.com/xtlx2000/WowAutoFisher/eve/common"
+	"github.com/xtlx2000/golib/common"
 	"github.com/xtlx2000/golib/image"
 	"github.com/xtlx2000/golib/log"
 )
@@ -19,10 +19,9 @@ func NewPositionInfo(x, y int) PositionInfo {
 	}
 }
 
-func FindPosInScreen(bmpFilename string) (PositionInfo, error) {
+func FindPosInScreen(bmpFilename string, tol float64) (PositionInfo, error) {
 	// get screen bmp
 	screenBMP := robotgo.CaptureScreen()
-	robotgo.SaveBitmap(screenBMP, "img/screen.png")
 	defer robotgo.FreeBitmap(screenBMP)
 	// get target bmp
 	targetBMP := robotgo.OpenBitmap(bmpFilename)
@@ -31,16 +30,22 @@ func FindPosInScreen(bmpFilename string) (PositionInfo, error) {
 	width, height, err := image.GetImgSize(bmpFilename)
 	if err != nil {
 		log.Errorf("GetImgSize error: %v", err)
-		return NewPositionInfo(-1, -1), err
+		return NewPositionInfo(-1, -1), common.NOT_FOUND
 	}
 	// find
-	fx, fy := robotgo.FindBitmap(targetBMP, screenBMP, 0.2)
+	fx, fy := robotgo.FindBitmap(targetBMP, screenBMP, tol)
 	if fx == -1 || fy == -1 {
-		return NewPositionInfo(-1, -1), common.POS_NOT_FOUND
+		return NewPositionInfo(-1, -1), common.NOT_FOUND
 	}
 
 	fx = fx + (width / 2)
 	fy = fy + (height / 2)
 
 	return NewPositionInfo(fx, fy), nil
+}
+
+func CaptureScreen(sWidth, sHeight, width, height int, imgFilename string) {
+	screenBMP := robotgo.CaptureScreen(sWidth, sHeight, width, height)
+	defer robotgo.FreeBitmap(screenBMP)
+	robotgo.SaveBitmap(screenBMP, imgFilename)
 }
