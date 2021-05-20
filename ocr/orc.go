@@ -1,4 +1,4 @@
-package orc
+package ocr
 
 import (
 	"compress/gzip"
@@ -63,7 +63,7 @@ func getAccessToken() (data accessToken) {
 // 文字识别（高精度）
 // 官方文档：https://cloud.baidu.com/doc/OCR/s/1k3h7y3db
 // img 图片地址
-func ORC(img string) (data Words) {
+func Recognite(img string) (data Words) {
 	requestUrl := fmt.Sprintf("%s?access_token=%s", accurateBasicUrl, getAccessToken().AccessToken)
 	f, e := os.Open(img)
 	printError(e)
@@ -119,6 +119,6 @@ func printError(e error) {
 
 /*
 func main() {
-	fmt.Println(OCR("./test.png"))
+	fmt.Println(Recognite("./test.jpg").WordsResult[0].Words)
 }
 */
