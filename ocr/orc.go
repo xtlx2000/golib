@@ -23,8 +23,10 @@ const (
 	secretKey string = "yGRZjm4433xLzZYCyXrgG8Pyzfzli9Sd"
 	// 授权服务地址
 	tokenUrl string = "https://aip.baidubce.com/oauth/2.0/token"
-	// 文字识别（高精度）API接口地址
-	accurateBasicUrl string = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic"
+	// 文字识别（高精度 500次/天）API接口地址
+	// accurateBasicUrl string = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic"
+	// 文字识别（标准版 50000次/天）API接口地址
+	accurateBasicUrl string = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic"
 )
 
 type accessToken struct {
