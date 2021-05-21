@@ -32,7 +32,7 @@ func DoubleKeyClick(key1, key2 string) {
 }
 
 func TypeStr(str string, args ...float64) {
-	robotgo.TypeStr(str, args)
+	robotgo.TypeStr(str, args...)
 }
 
 // mouse
