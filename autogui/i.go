@@ -31,6 +31,10 @@ func DoubleKeyClick(key1, key2 string) {
 	KeyUp(key1)
 }
 
+func TypeStr(str string, args ...float64) {
+	robotgo.TypeStr(str, args)
+}
+
 // mouse
 func MoveTo(pos PositionInfo) {
 	robotgo.MoveMouse(pos.X, pos.Y)
