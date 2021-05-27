@@ -8,7 +8,7 @@ import (
 func SendToMail(sendUserName, to, subject, body string) error {
 	user := "80181339@qq.com"
 	password := "fmfnaolzwhdhcace"
-	host := "smtp.qq.com"
+	host := "smtp.qq.com:465"
 	mailtype := "html"
 
 	hp := strings.Split(host, ":")
