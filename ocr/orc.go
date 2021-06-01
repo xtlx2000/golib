@@ -12,6 +12,8 @@ import (
 	"net/url"
 	"os"
 	"strings"
+
+	goliblog "github.com/xtlx2000/golib/log"
 )
 
 const (
@@ -51,22 +53,32 @@ type Words struct {
 // 获取access_token
 // access_token有效期一般是30天
 // 官方文档：https://ai.baidu.com/ai-doc/REFERENCE/Ck3dwjhhu
-func getAccessToken() (data accessToken) {
+func getAccessToken() (data accessToken, err error) {
 	requestUrl := fmt.Sprintf("%s?grant_type=%s&client_id=%s&client_secret=%s", tokenUrl, grantType, apiKey, secretKey)
-	response, e := http.Get(requestUrl)
+	response, err := http.Get(requestUrl)
+	if err != nil {
+		goliblog.Errorf("http get error: %v", err)
+		return
+	}
 	defer response.Body.Close()
-	printError(e)
 	s := unCoding(response)
-	e = json.Unmarshal([]byte(s), &data)
-	printError(e)
+	err = json.Unmarshal([]byte(s), &data)
+	if err != nil {
+		goliblog.Errorf("unmarshal error:%v", err)
+	}
 	return
 }
 
 // 文字识别（高精度）
 // 官方文档：https://cloud.baidu.com/doc/OCR/s/1k3h7y3db
 // img 图片地址
-func Recognite(img string) (data Words) {
-	requestUrl := fmt.Sprintf("%s?access_token=%s", accurateBasicUrl, getAccessToken().AccessToken)
+func Recognite(img string) (data Words, err error) {
+	token, err := getAccessToken()
+	if err != nil {
+		goliblog.Errorf("getAccessToken error: %v", err)
+		return
+	}
+	requestUrl := fmt.Sprintf("%s?access_token=%s", accurateBasicUrl, token.AccessToken)
 	f, e := os.Open(img)
 	printError(e)
 	defer f.Close()
