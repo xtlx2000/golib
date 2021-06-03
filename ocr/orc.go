@@ -61,10 +61,15 @@ func getAccessToken() (data accessToken, err error) {
 		return
 	}
 	defer response.Body.Close()
-	s := unCoding(response)
+	s, err := unCoding(response)
+	if err != nil {
+		goliblog.Errorf("unCoding error: %v", err)
+		return
+	}
 	err = json.Unmarshal([]byte(s), &data)
 	if err != nil {
 		goliblog.Errorf("unmarshal error:%v", err)
+		return
 	}
 	return
 }
@@ -91,17 +96,28 @@ func Recognite(img string) (data Words, err error) {
 	values := url.Values{"image": {imgString}}
 	response, e := http.Post(requestUrl, "application/x-www-form-urlencoded", strings.NewReader(values.Encode()))
 	defer response.Body.Close()
-	s := unCoding(response)
-	e = json.Unmarshal([]byte(s), &data)
-	printError(e)
+	s, err := unCoding(response)
+	if err != nil {
+		goliblog.Errorf("unCoding error: %v", err)
+		return
+	}
+	err = json.Unmarshal([]byte(s), &data)
+	if err != nil {
+		goliblog.Errorf("Unmarshal error: %v", err)
+	}
 	return
 }
 
-func unCoding(r *http.Response) (body string) {
+func unCoding(r *http.Response) (body string, err error) {
 	if r.StatusCode == 200 {
 		switch r.Header.Get("Content-Encoding") {
 		case "gzip":
-			reader, _ := gzip.NewReader(r.Body)
+			var reader *gzip.Reader
+			reader, err = gzip.NewReader(r.Body)
+			if err != nil {
+				goliblog.Errorf("NewReader error: %v", err)
+				return
+			}
 			for {
 				buf := make([]byte, 1024)
 				n, err := reader.Read(buf)
