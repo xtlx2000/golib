@@ -1,12 +1,11 @@
 package sound
 
 import (
+	"io"
 	"os"
-	"time"
 
-	"github.com/faiface/beep"
-	"github.com/faiface/beep/mp3"
-	"github.com/faiface/beep/speaker"
+	"github.com/hajimehoshi/go-mp3"
+	"github.com/hajimehoshi/oto"
 
 	"github.com/xtlx2000/golib/log"
 )
@@ -14,26 +13,28 @@ import (
 func PlayMp3(filepath string) error {
 	f, err := os.Open(filepath)
 	if err != nil {
-		log.Errorf("os open error: %v", err)
+		log.Errorf("open error: %v", err)
 		return err
 	}
+	defer f.Close()
 
-	streamer, format, err := mp3.Decode(f)
+	d, err := mp3.NewDecoder(f)
 	if err != nil {
-		log.Errorf("mp3 decode error: %v", err)
+		log.Errorf("decode error: %v", err)
 		return err
 	}
-	defer streamer.Close()
+	ctx, err := oto.NewContext(d.SampleRate(), 2, 2, 8192)
+	if err != nil {
+		log.Errorf("oto error: %v", err)
+		return err
+	}
+	defer ctx.Close()
 
-	speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
+	player := ctx.NewPlayer()
+	defer player.Close()
 
-	done := make(chan bool)
-	speaker.Play(beep.Seq(streamer, beep.Callback(func() {
-		done <- true
-	})))
-
-	<-done
-
-	time.Sleep(time.Millisecond * 200)
+	if _, err = io.Copy(player, d); err != nil {
+		return err
+	}
 	return nil
 }
