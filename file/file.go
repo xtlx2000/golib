@@ -1,8 +1,10 @@
 package file
 
 import (
+	"fmt"
 	"io"
 	"io/ioutil"
+	"os"
 )
 
 func WriteFile(filename, text string) error {
