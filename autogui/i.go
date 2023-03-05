@@ -41,12 +41,12 @@ func MoveTo(pos PositionInfo) {
 }
 
 func LeftClick() {
-	robotgo.MouseClick("left", true)
+	robotgo.MouseClick("left", false)
 }
 
 func RightClick() {
 	Delay(500)
-	robotgo.MouseClick("right", true)
+	robotgo.MouseClick("right", false)
 }
 
 func GetMousePos() PositionInfo {
