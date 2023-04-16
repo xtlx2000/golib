@@ -31,7 +31,7 @@ func DoubleKeyClick(key1, key2 string) {
 	KeyUp(key1)
 }
 
-func TypeStr(str string, args ...float64) {
+func TypeStr(str string, args ...int) {
 	robotgo.TypeStr(str, args...)
 }
 
